@@ -45,7 +45,7 @@ void iniciaPortas(){
 
 void loop() {
   int resposta = checaRespostaPlayer();
- 
+
 }
 
 int checaRespostaPlayer(){
