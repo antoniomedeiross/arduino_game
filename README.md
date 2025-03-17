@@ -7,10 +7,10 @@ Este projeto é uma recriação do clássico jogo Genius (Simon Says) utilizando
 
 O jogo funciona da seguinte forma:
 
-O sistema exibe uma sequência de LEDs piscando em ordem aleatória.
-O jogador deve repetir a sequência pressionando os botões correspondentes.
-Se acertar, a sequência aumenta e o jogo continua.
-Se errar, o jogo reinicia e exibe um efeito de erro.
+O sistema exibe uma sequência de LEDs piscando em ordem aleatória.  
+O jogador deve repetir a sequência pressionando os botões correspondentes.  
+Se acertar, a sequência aumenta e o jogo continua.  
+Se errar, o jogo reinicia e exibe um efeito de erro.  
 
 ## 🎮 Demonstração  
 ![Demontração do Jogo](include/esquema_circuito.png)
