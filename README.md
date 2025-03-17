@@ -1,5 +1,7 @@
 # 📌 Jogo da Memória 
 
+---
+
 ## 📝 Descrição  
 
 ## 🎮 Demonstração  

@@ -5,6 +5,7 @@
 #define LED_VERMELHO 3
 #define LED_AZUL 4
 #define LED_AMARELO 5
+#define TAMANHO_SEQUENCIA 4
 
 #define BOTAO_VERDE 10
 #define BOTAO_VERMELHO 11
@@ -20,13 +21,30 @@
 void iniciaPortas();
 int piscaLed(int);
 int checaRespostaPlayer();
+void iniciaJogo();
+int sorteiaCor();
 
-int sequenciaLuzes[] = {LED_VERMELHO, LED_AMARELO, LED_VERDE, LED_AZUL};
+int sequenciaLuzes[TAMANHO_SEQUENCIA];
 
 
 void setup() {
+  Serial.begin(9600);
   iniciaPortas();
+  iniciaJogo();
 
+}
+
+void iniciaJogo() {
+  int jogo = analogRead(A0); 
+  randomSeed(jogo);
+  
+  for(int i=0; i<TAMANHO_SEQUENCIA; i++){
+    sequenciaLuzes[i] = sorteiaCor();  
+  }
+}
+
+int sorteiaCor() {
+  return random(LED_VERDE, LED_AMARELO+1); // 2-5
 }
 
 void iniciaPortas(){
@@ -44,7 +62,12 @@ void iniciaPortas(){
 }
 
 void loop() {
-  int resposta = checaRespostaPlayer();
+  for(int i=0; i<TAMANHO_SEQUENCIA; i++){
+    piscaLed(sequenciaLuzes[i]);
+  }
+
+  delay(1000);
+  //int resposta = checaRespostaPlayer();
 
 }
 
