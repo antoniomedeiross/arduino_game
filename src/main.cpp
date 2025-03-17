@@ -17,15 +17,31 @@
 #define UM_SEGUNDO 1000
 #define MEIO_SEGUNDO 500
 
+enum Estados {
+  PRONTO_PROX_RODADA,
+  USUARIO_RESPONDENDO,
+  JOGO_FINALIZADO_SUCESSO,
+  JOGO_FINALIZADO_FALHA
+};
+
 
 void iniciaPortas();
 int piscaLed(int);
 int checaRespostaPlayer();
 void iniciaJogo();
 int sorteiaCor();
+int estadoAtual();
+void acendeLedsRodada();
+void preparaNovaRodada();
+void processaResposta();
+void jogoFinalizadoSucesso();
+void jogoFinalizadoFalha();
+void piscaSequencia1();
+void piscaSequencia2();
 
 int sequenciaLuzes[TAMANHO_SEQUENCIA];
-
+int rodada = 0;
+int respostaUser = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -62,13 +78,83 @@ void iniciaPortas(){
 }
 
 void loop() {
-  for(int i=0; i<TAMANHO_SEQUENCIA; i++){
-    piscaLed(sequenciaLuzes[i]);
+  switch(estadoAtual()){
+    case PRONTO_PROX_RODADA:
+      Serial.println("Pronto prox rodada");
+      preparaNovaRodada();
+      break;
+     case USUARIO_RESPONDENDO:
+      Serial.println("User respondendo");
+      processaResposta();
+      break;
+    case JOGO_FINALIZADO_SUCESSO:
+      jogoFinalizadoSucesso();
+      Serial.println("Finalizado com sucesso");
+      break;
+    case JOGO_FINALIZADO_FALHA:
+      jogoFinalizadoFalha();
+      Serial.println("Finalizado com falha");
+      break;
+    default: 
+      break;
+  }
+  delay(MEIO_SEGUNDO);
+  // int resposta = checaRespostaPlayer();
+}
+
+void jogoFinalizadoSucesso() {
+  piscaSequencia1();
+  iniciaJogo();
+}
+
+void jogoFinalizadoFalha() {
+  piscaSequencia2();
+  iniciaJogo();
+}
+
+void processaResposta() {
+  int resposta = checaRespostaPlayer();
+
+  if(resposta == INDEFINIDO) {
+    return;
   }
 
-  delay(1000);
-  //int resposta = checaRespostaPlayer();
+  if(resposta == sequenciaLuzes[respostaUser]){
+    Serial.println("Acertou");
+    respostaUser ++;
 
+  } else {
+    rodada = TAMANHO_SEQUENCIA+2;
+    Serial.println("Errou");
+  }
+}
+
+void preparaNovaRodada() {
+  rodada++;
+  respostaUser = 0;
+  if(rodada<=TAMANHO_SEQUENCIA) {
+    acendeLedsRodada();
+  }
+}
+
+int estadoAtual() {
+  if(rodada <= TAMANHO_SEQUENCIA) {
+    if(respostaUser < rodada) {
+      return USUARIO_RESPONDENDO;
+    }
+    return PRONTO_PROX_RODADA;
+  } else if(rodada == TAMANHO_SEQUENCIA+1) {
+    return JOGO_FINALIZADO_SUCESSO;
+  } else {
+    return JOGO_FINALIZADO_FALHA;
+  }
+}
+
+void acendeLedsRodada() {
+  for(int i=0; i<rodada; i++){
+    piscaLed(sequenciaLuzes[i]);
+  }
+  delay(250);
 }
 
 int checaRespostaPlayer(){
