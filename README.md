@@ -13,7 +13,8 @@ Se acertar, a sequência aumenta e o jogo continua.
 Se errar, o jogo reinicia e exibe um efeito de erro.  
 
 ## 🎮 Demonstração  
-![Demontração do Jogo](include/esquema_circuito.png)
+![Demontração do Jogo]()  
+EM breve
 
 ## 🛠 Hardware e Componentes Necessários 
 Arduino Uno (ou qualquer outra placa compatível)  
